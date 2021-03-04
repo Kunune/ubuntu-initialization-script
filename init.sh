@@ -1,5 +1,9 @@
 #!/bin/bash
 
+#----------------------
+# check superuser
+#----------------------
+
 if [ "$EUID" != 0 ]; then
         echo "This script needs to be run with superuser privileges."
         exit
@@ -14,6 +18,13 @@ BG_GREEN="\e[1;42m"
 NC="\e[0m"
 
 #----------------------
+# check OS
+#----------------------
+
+os=`cat /etc/os-release | grep ubuntu`
+[ -z "$os" ] && echo -e "${BG_RED} It can only run on Ubuntu. ${NC}"
+
+#----------------------
 # text editor
 #----------------------
 
@@ -23,12 +34,13 @@ echo "1) vim"
 echo "2) nano"
 echo "3) I don't want to install it"
 
-read -p "enter a number [3] : " editor
+read -p "enter a number [1] : " editor
 
 until [[ -z "$editor" || "$editor" =~ ^[123] ]]; do
         echo -e "${BG_RED} $editor : invalid value ${NC}"
-        read -p "enter a number [3] : " editor
+        read -p "enter a number [1] : " editor
 done
+[ -z "$editor" ] && editor="1"
 
 #---------------------
 # firewall
@@ -46,6 +58,7 @@ until [[ -z "$firewall" || "$firewall" =~ ^[123] ]]; do
         echo -e "${BG_RED} $firewall : invaild value ${NC}"
         read -e "enter a number [1] : " firewall
 done
+[ -z "$firewall" ] && firewall="1"
 
 #--------------------
 # crontab
