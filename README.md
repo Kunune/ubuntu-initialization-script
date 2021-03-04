@@ -3,9 +3,9 @@ This script helps you set up when you first install ubuntu.
 
 # Functions
 
-- text editor : vim / nano
-- firewall : firewalld / ufw / iptables
-- crontab
+- `text editor` : vim / nano
+- `firewall` : firewalld / ufw / iptables
+- `crontab`
 
 # Attention
 
