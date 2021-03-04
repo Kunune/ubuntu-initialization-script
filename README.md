@@ -3,17 +3,14 @@ This script helps you set up when you first install ubuntu.
 
 # Envirionment
 
-- Ubuntu 20.04 LTS Focal Fossa
+- Ubuntu 20.04 LTS Focal Fossa | ✅ 3/4/21
 
 # Functions
 
 - `text editor` : vim / nano
 - `firewall` : firewalld / ufw / iptables
+- `reverse proxy` : nginx / apache2 / caddy
 - `crontab`
-
-# Attention
-
-It's not perfect yet.
 
 # Get in touch
 
