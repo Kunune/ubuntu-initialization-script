@@ -13,7 +13,9 @@ fi
 # text color
 #----------------------
 
+RED="\e[1;31m"
 GREEN="\e[1;32m"
+YELLOW="\e[1;33m"
 BG_RED="\e[1;41m"
 BG_GREEN="\e[1;42m"
 BG_YELLOW="\e[1;43m"
@@ -68,6 +70,28 @@ until [[ -z "$firewall" || "$firewall" =~ ^[123] ]]; do
         read -p "Enter a number [3] : " firewall
 done
 [ -z "$firewall" ] && firewall="3"
+
+
+if [ "$firewall" != 3 ]; then
+        echo
+        echo -e "${BG_CYAN} Which port do you want to disable firewall? ${NC}"
+        echo -e "${RED}The entered ports are disabled by TCP and are accessible from any IP.  ${NC}"
+        read -p "Enter a port [exit] : " a
+
+        index=0
+
+        until [[ -z "$a" ]]; do
+                echo
+                port[$index]=$a
+                echo -e "${BG_YELLOW} Currently entered ${NC}"
+                for item in "${port[@]}"; do
+                        printf "$item "
+                done
+                echo
+                ((index=index+1))
+                read -p "Enter a port [exit] : " a
+        done
+fi
 
 #--------------------
 # reverse proxy
@@ -138,7 +162,7 @@ case $editor in
                 apt install nano -y
                 ;;
         3)
-                echo -e "You do not want to install text editor."
+                echo -e "${YELLOW} Do not install. ${NC}"
                 ;;
 esac
 
@@ -155,7 +179,27 @@ case $firewall in
                 apt install ufw -y
                 ;;
         3)
-                echo -e "Firewall must be set to iptables"
+                echo -e "${YELLOW} Do not install. ${NC}"
+                ;;
+esac
+
+echo
+echo -e "${BG_GREEN} Setting Firewall... ${NC}"
+case $firewall in
+        1)
+                for item in "${port[@]}"; do
+                        firewall-cmd --permanent --zone="public" --add-port="${item}/tcp"
+                done
+                firewall-cmd --reload
+                ;;
+        2)
+                for item in "${port[@]}"; do
+                        ufw allow ${item}
+                done
+                ufw enable
+                ;;
+        3)
+                echo -e "${RED} You must disable the firewall with iptables. ${NC}"
                 ;;
 esac
 
@@ -180,7 +224,7 @@ case $reverseProxy in
                 apt install caddy
                 ;;
         4)
-                echo "You do not want to install reverse proxy."
+                echo -e "${YELLOW} Do not install. ${NC}"
                 ;;
 esac
 
@@ -195,7 +239,7 @@ case $cron in
                 apt install cron -y
                 ;;
         n)
-                echo -e "You do not want to install crontab"
+                echo -e "${YELLOW} Do not install. ${NC}"
                 ;;
 esac
 
