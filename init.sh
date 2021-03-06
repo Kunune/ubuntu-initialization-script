@@ -199,4 +199,10 @@ case $cron in
                 ;;
 esac
 
+#-------------------
+# reboot
+#-------------------
+
 echo
+echo -e "${BG_YELLOW} Restart automatically... ${NC}"
+reboot
