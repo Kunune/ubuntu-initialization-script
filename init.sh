@@ -41,8 +41,8 @@ clear
 
 echo
 echo -e "${BG_CYAN} Which text editor do you want to use? ${NC}"
-echo "1) vim"
-echo "2) nano"
+echo "1) nano"
+echo "2) vim"
 echo "3) Do not install"
 
 read -p "Enter a number [3] : " editor
@@ -156,10 +156,10 @@ echo
 echo -e "${BG_GREEN} Installing text editor... ${NC}"
 case $editor in
         1)
-                apt install vim -y
+                apt install nano -y
                 ;;
         2)
-                apt install nano -y
+                apt install vim -y
                 ;;
         3)
                 echo -e "${YELLOW} Do not install. ${NC}"
@@ -249,4 +249,5 @@ esac
 
 echo
 echo -e "${BG_YELLOW} Restart automatically... ${NC}"
+sleep 5
 reboot
