@@ -74,7 +74,7 @@ done
 
 if [ "$firewall" != 3 ]; then
         echo
-        echo -e "${BG_CYAN} Which port do you want to disable firewall? ${NC}"
+        echo -e "${BG_CYAN} Which port do you want to set? ${NC}"
         echo -e "${RED}The entered ports are disabled by TCP and are accessible from any IP.  ${NC}"
         read -p "Enter a port [exit] : " a
 
