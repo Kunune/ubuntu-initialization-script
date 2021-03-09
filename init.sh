@@ -11,7 +11,8 @@ if [ -f /etc/os-release ]; then
 fi
 
 if [ "$OS" != "Ubuntu" ]; then
-        echo "This script can only run on ubuntu."
+        echo "This script seems to be running on an unsupported distribution."
+        echo "Supported distribution is Ubuntu."
         exit
 fi
 
