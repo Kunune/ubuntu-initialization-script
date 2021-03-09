@@ -1,6 +1,21 @@
 #!/bin/bash
 
 #----------------------
+# check os
+#----------------------
+
+if [ -f /etc/os-release ]; then
+        . /etc/os-release
+        OS=$NAME
+        VER=$VERSION_ID
+fi
+
+if [ "$OS" != "Ubuntu" ]; then
+        echo "This script can only run on ubuntu."
+        exit
+fi
+
+#----------------------
 # check superuser
 #----------------------
 
@@ -22,13 +37,6 @@ BG_YELLOW="\e[1;43m"
 BG_MAGENTA="\e[1;45m"
 BG_CYAN="\e[1;46m"
 NC="\e[0m"
-
-#----------------------
-# check OS
-#----------------------
-
-os=`cat /etc/os-release | grep ubuntu`
-[ -z "$os" ] && echo -e "${BG_RED} It can only run on Ubuntu. ${NC}"
 
 #----------------------
 # clear screen
@@ -70,28 +78,6 @@ until [[ -z "$firewall" || "$firewall" =~ ^[123] ]]; do
         read -p "Enter a number [3] : " firewall
 done
 [ -z "$firewall" ] && firewall="3"
-
-
-if [ "$firewall" != 3 ]; then
-        echo
-        echo -e "${BG_CYAN} Which port do you want to set? ${NC}"
-        echo -e "${RED}The entered ports are disabled by TCP and are accessible from any IP.  ${NC}"
-        read -p "Enter a port [exit] : " a
-
-        index=0
-
-        until [[ -z "$a" ]]; do
-                echo
-                port[$index]=$a
-                echo -e "${BG_YELLOW} Currently entered ${NC}"
-                for item in "${port[@]}"; do
-                        printf "$item "
-                done
-                echo
-                ((index=index+1))
-                read -p "Enter a port [exit] : " a
-        done
-fi
 
 #--------------------
 # reverse proxy
@@ -183,26 +169,6 @@ case $firewall in
                 ;;
 esac
 
-echo
-echo -e "${BG_GREEN} Setting Firewall... ${NC}"
-case $firewall in
-        1)
-                for item in "${port[@]}"; do
-                        firewall-cmd --permanent --zone="public" --add-port="${item}/tcp"
-                done
-                firewall-cmd --reload
-                ;;
-        2)
-                for item in "${port[@]}"; do
-                        ufw allow ${item}
-                done
-                ufw enable
-                ;;
-        3)
-                echo -e "${RED} You must disable the firewall with iptables. ${NC}"
-                ;;
-esac
-
 #-----------------------
 # install reverse proxy
 #-----------------------
@@ -249,5 +215,8 @@ esac
 
 echo
 echo -e "${BG_YELLOW} Restart automatically... ${NC}"
+
+echo "It will restart in 5 seconds."
 sleep 5
+
 reboot
