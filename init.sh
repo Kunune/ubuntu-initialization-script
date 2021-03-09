@@ -139,12 +139,12 @@ read -n1 -r -p "Press any key to continue..."
 #--------------------
 
 echo
-echo -e "${BG_GREEN} Updating apt... ${NC}"
+echo -e "${BG_GREEN} Updating... ${NC}"
 
 apt update -y
 echo
 
-echo -e "${BG_GREEN} Upgrading apt... ${NC}"
+echo -e "${BG_GREEN} Upgrading... ${NC}"
 
 apt upgrade -y
 echo
