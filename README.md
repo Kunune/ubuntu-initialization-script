@@ -1,5 +1,8 @@
-# ubuntu-initialization-script
-This script helps you set up when you first install ubuntu.
+# Download
+
+    curl -O https://raw.githubusercontent.com/Kunune/ubuntu-initialization-script/main/init.sh
+    chmod +x init.sh
+    sudo ./init.sh
 
 # Envirionment
 
