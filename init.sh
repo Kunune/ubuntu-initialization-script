@@ -17,15 +17,6 @@ if [ "$OS" != "Ubuntu" ]; then
 fi
 
 #----------------------
-# check superuser
-#----------------------
-
-if [ "$EUID" != 0 ]; then
-        echo "This script needs to be run with superuser privileges."
-        exit
-fi
-
-#----------------------
 # text color
 #----------------------
 
@@ -128,12 +119,12 @@ read -n1 -r -p "Press any key to continue..."
 echo
 echo -e "${BG_GREEN} Updating... ${NC}"
 
-apt update -y
+sudo apt update -y
 echo
 
 echo -e "${BG_GREEN} Upgrading... ${NC}"
 
-apt upgrade -y
+sudo apt upgrade -y
 echo
 
 #----------------------
@@ -143,10 +134,10 @@ echo
 echo -e "${BG_GREEN} Installing text editor... ${NC}"
 case $editor in
         1)
-                apt install nano -y
+                sudo apt install nano -y
                 ;;
         2)
-                apt install vim -y
+                sudo apt install vim -y
                 ;;
         3)
                 echo -e "${YELLOW} Do not install. ${NC}"
@@ -160,10 +151,10 @@ echo
 echo -e "${BG_GREEN} Installing firewall... ${NC}"
 case $firewall in
         1)
-                apt install firewalld -y
+                sudo apt install firewalld -y
                 ;;
         2)
-                apt install ufw -y
+                sudo apt install ufw -y
                 ;;
         3)
                 echo -e "${YELLOW} Do not install. ${NC}"
@@ -178,17 +169,17 @@ echo
 echo -e "${BG_GREEN} Installing reverse proxy... ${NC}"
 case $reverseProxy in
         1)
-                apt install nginx -y
+                sudo apt install nginx -y
                 ;;
         2)
-                apt install apache2 -y
+                sudo apt install apache2 -y
                 ;;
         3)
-                apt install -y debian-keyring debian-archive-keyring apt-transport-https
+                sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https
                 curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo apt-key add -
                 curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee -a /etc/apt/sources.list.d/caddy-stable.list
-                apt update
-                apt install caddy
+                sudo apt update
+                sudo apt install caddy
                 ;;
         4)
                 echo -e "${YELLOW} Do not install. ${NC}"
@@ -203,27 +194,12 @@ echo
 echo -e "${BG_GREEN} Installing crontab... ${NC}"
 case $cron in
         y)
-                apt install cron -y
+                sudo apt install cron -y
                 ;;
         n)
                 echo -e "${YELLOW} Do not install. ${NC}"
                 ;;
 esac
-
-#-------------------
-# add alias
-#-------------------
-
-echo
-echo -e "${BG_GREEN} Adding alias ${NC}"
-
-alias sshd='cat /etc/ssh/sshd_config'
-alias sshd-path='echo "/etc/ssh/sshd_config"'
-alias sshd-restart='echo "sudo systemctl restart ssh"'
-
-echo -e "${GREEN}sshd${NC} : view sshd_config"
-echo -e "${GREEN}sshd-path${NC} : view sshd_config path"
-echo -e "${GREEN}sshd-restart${NC} : show restart command"
 
 #-------------------
 # password reset
@@ -239,7 +215,6 @@ echo -e "> passwd"
 #-------------------
 # reboot
 #-------------------
-
 echo
 echo -e "${BG_YELLOW} Restart automatically... ${NC}"
 
@@ -247,4 +222,4 @@ echo "It will restart in 5 seconds."
 echo
 sleep 5
 
-reboot
+sudo reboot
