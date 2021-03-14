@@ -211,6 +211,30 @@ case $cron in
 esac
 
 #-------------------
+# add alias
+#-------------------
+
+echo
+echo -e "${BG_GREEN} Adding alias ${NC}"
+
+alias sshd='cat /etc/ssh/sshd_config'
+alias sshd-path='echo "/etc/ssh/sshd_config"'
+
+echo -e "${GREEN}sshd${NC} : view sshd_config"
+echo -e "${GREEN}sshd-path${NC} : view sshd_config path"
+
+#-------------------
+# password reset
+#-------------------
+
+passwd -d "$USER"
+
+echo
+echo -e "${BG_GREEN} Password reseted ${NC}"
+echo -e "${RED}Password must be set after reboot.${NC}"
+echo -e "> passwd"
+
+#-------------------
 # reboot
 #-------------------
 
@@ -218,6 +242,7 @@ echo
 echo -e "${BG_YELLOW} Restart automatically... ${NC}"
 
 echo "It will restart in 5 seconds."
+echo
 sleep 5
 
 reboot
