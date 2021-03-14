@@ -219,9 +219,11 @@ echo -e "${BG_GREEN} Adding alias ${NC}"
 
 alias sshd='cat /etc/ssh/sshd_config'
 alias sshd-path='echo "/etc/ssh/sshd_config"'
+alias sshd-restart='echo "sudo systemctl restart ssh"'
 
 echo -e "${GREEN}sshd${NC} : view sshd_config"
 echo -e "${GREEN}sshd-path${NC} : view sshd_config path"
+echo -e "${GREEN}sshd-restart${NC} : show restart command"
 
 #-------------------
 # password reset
