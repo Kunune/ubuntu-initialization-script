@@ -2,7 +2,7 @@
 
     curl -O https://raw.githubusercontent.com/Kunune/ubuntu-initialization-script/main/init.sh
     chmod +x init.sh
-    sudo ./init.sh
+    ./init.sh
 
 # Envirionment
 
