@@ -1,4 +1,4 @@
-# Download
+# Usage
 
     curl -O https://raw.githubusercontent.com/Kunune/ubuntu-initialization-script/main/init.sh
     chmod +x init.sh
