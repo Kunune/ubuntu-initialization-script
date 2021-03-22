@@ -45,13 +45,13 @@ echo "1) nano"
 echo "2) vim"
 echo "3) Do not install"
 
-read -p "Enter a number [3] : " editor
+read -p "Enter a number [1] : " editor
 
 until [[ -z "$editor" || "$editor" =~ ^[123] ]]; do
         echo -e "${BG_RED} $editor : invalid value ${NC}"
-        read -p "Enter a number [3] : " editor
+        read -p "Enter a number [1] : " editor
 done
-[ -z "$editor" ] && editor="3"
+[ -z "$editor" ] && editor="1"
 
 #---------------------
 # firewall
@@ -59,17 +59,17 @@ done
 
 echo
 echo -e "${BG_CYAN} Which firewall do you want to use? ${NC}"
-echo "1) firewalld"
-echo "2) ufw"
-echo "3) iptables (do not install)"
+echo "1) iptables"
+echo "2) firewalld"
+echo "3) ufw"
 
-read -p "Enter a number [3] : " firewall
+read -p "Enter a number [1] : " firewall
 
 until [[ -z "$firewall" || "$firewall" =~ ^[123] ]]; do
         echo -e "${BG_RED} $firewall : invaild value ${NC}"
-        read -p "Enter a number [3] : " firewall
+        read -p "Enter a number [1] : " firewall
 done
-[ -z "$firewall" ] && firewall="3"
+[ -z "$firewall" ] && firewall="1"
 
 #--------------------
 # reverse proxy
@@ -151,13 +151,13 @@ echo
 echo -e "${BG_GREEN} Installing firewall... ${NC}"
 case $firewall in
         1)
-                sudo apt install firewalld -y
+                sudo apt install iptables -y
                 ;;
         2)
-                sudo apt install ufw -y
+                sudo apt install firewalld -y
                 ;;
         3)
-                echo -e "${YELLOW} Do not install. ${NC}"
+                sudo apt install ufw -y
                 ;;
 esac
 
