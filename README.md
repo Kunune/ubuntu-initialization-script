@@ -1,12 +1,12 @@
+# Envirionment
+
+- Ubuntu 20.04 LTS Focal Fossa | ✅ 3/4/21
+
 # Usage
 
     curl -O https://raw.githubusercontent.com/Kunune/ubuntu-initialization-script/main/init.sh
     chmod +x init.sh
     ./init.sh
-
-# Envirionment
-
-- Ubuntu 20.04 LTS Focal Fossa | ✅ 3/4/21
 
 # Functions
 
