@@ -3,7 +3,6 @@
 #----------------------
 # check os
 #----------------------
-
 if [ -f /etc/os-release ]; then
         . /etc/os-release
         OS=$NAME
@@ -19,7 +18,6 @@ fi
 #----------------------
 # text color
 #----------------------
-
 RED="\e[1;31m"
 GREEN="\e[1;32m"
 YELLOW="\e[1;33m"
@@ -38,76 +36,68 @@ clear
 #----------------------
 # text editor
 #----------------------
-
 echo
-echo -e "${BG_CYAN} Which text editor do you want to use? ${NC}"
+echo -e "${BG_CYAN} Text editor ${NC}"
 echo "1) nano"
-echo "2) vim"
-echo "3) Do not install"
+echo "2) Do not install"
 
-read -p "Enter a number [1] : " editor
+read -p "Text editor [1] : " editor
 
-until [[ -z "$editor" || "$editor" =~ ^[123] ]]; do
+until [[ -z "$editor" || "$editor" =~ ^[12] ]]; do
         echo -e "${BG_RED} $editor : invalid value ${NC}"
-        read -p "Enter a number [1] : " editor
+        read -p "Text editor [1] : " editor
 done
 [ -z "$editor" ] && editor="1"
 
 #---------------------
 # firewall
 #---------------------
-
 echo
-echo -e "${BG_CYAN} Which firewall do you want to use? ${NC}"
+echo -e "${BG_CYAN} Firewall ${NC}"
 echo "1) iptables"
-echo "2) firewalld"
-echo "3) ufw"
+echo "2) Do not install"
 
-read -p "Enter a number [1] : " firewall
+read -p "Firewall [1] : " firewall
 
-until [[ -z "$firewall" || "$firewall" =~ ^[123] ]]; do
+until [[ -z "$firewall" || "$firewall" =~ ^[12] ]]; do
         echo -e "${BG_RED} $firewall : invaild value ${NC}"
-        read -p "Enter a number [1] : " firewall
+        read -p "Firewall [1] : " firewall
 done
 [ -z "$firewall" ] && firewall="1"
 
 #--------------------
 # reverse proxy
 #--------------------
-
 echo
-echo -e "${BG_CYAN} Do you want to install reverse proxy? ${NC}"
+echo -e "${BG_CYAN} Reverse proxy ${NC}"
 echo "1) Nginx"
-echo "2) Apache2"
-echo "3) Caddy"
-echo "4) Do not install"
+echo "2) Do not install"
 
-read -p "Enter a number [4] : " reverseProxy
+read -p "Reverse proxy [2] : " reverseProxy
 
-until [[ -z "$reverseProxy" || "$reverseProxy" =~ ^[1234] ]]; do
+until [[ -z "$reverseProxy" || "$reverseProxy" =~ ^[12] ]]; do
         echo -e "${BG_RED} $reverseProxy : invalid value ${NC}"
-        read -p "Enter a number [4] : " reverseProxy
+        read -p "Reverse proxy [2] : " reverseProxy
 done
-[ -z "$reverseProxy" ] && reverseProxy="4"
+[ -z "$reverseProxy" ] && reverseProxy="2"
 
 #--------------------
 # crontab
 #--------------------
 echo
-echo -e "${BG_CYAN} Do you want to install crontab? ${NC}"
+echo -e "${BG_CYAN} Crontab ${NC}"
 
-read -p "Give an answer (y/n) [n] : " cron
+read -p "install (y/n) [y] : " cron
 
 until [[ -z "$cron" || "$cron" =~ ^[yn] ]]; do
         echo -e "${BG_RED} $cron : invaild value ${NC}"
-        read -p "Give an answer (y/n) [n] : " cron
+        read -p "install (y/n) [y] : " cron
 done
-[ -z "$cron" ] && cron="n"
+[ -z "$cron" ] && cron="y"
 
 #-------------------
 # before start
 #-------------------
-
 echo
 echo -e "${BG_GREEN} Setup is ready to install. ${NC}"
 read -n1 -r -p "Press any key to continue..."
@@ -115,17 +105,15 @@ read -n1 -r -p "Press any key to continue..."
 #--------------------
 # start
 #--------------------
-
 echo
 echo -e "${BG_GREEN} Updating... ${NC}"
 
 sudo apt update -y
-echo
 
+echo
 echo -e "${BG_GREEN} Upgrading... ${NC}"
 
 sudo apt upgrade -y
-echo
 
 #----------------------
 # install text editor
@@ -137,9 +125,6 @@ case $editor in
                 sudo apt install nano -y
                 ;;
         2)
-                sudo apt install vim -y
-                ;;
-        3)
                 echo -e "${YELLOW} Do not install. ${NC}"
                 ;;
 esac
@@ -151,60 +136,44 @@ echo
 echo -e "${BG_GREEN} Installing firewall... ${NC}"
 case $firewall in
         1)
-                sudo apt install iptables -y
-                ;;
+            sudo apt install iptables -y
+            ;;
         2)
-                sudo apt install firewalld -y
-                ;;
-        3)
-                sudo apt install ufw -y
-                ;;
+            echo -e "${YELLOW} Do not install. ${NC}"
+            ;;
 esac
 
 #-----------------------
 # install reverse proxy
 #-----------------------
-
 echo
 echo -e "${BG_GREEN} Installing reverse proxy... ${NC}"
 case $reverseProxy in
         1)
-                sudo apt install nginx -y
-                ;;
+            sudo apt install nginx -y
+            ;;
         2)
-                sudo apt install apache2 -y
-                ;;
-        3)
-                sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https
-                curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo apt-key add -
-                curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee -a /etc/apt/sources.list.d/caddy-stable.list
-                sudo apt update
-                sudo apt install caddy
-                ;;
-        4)
-                echo -e "${YELLOW} Do not install. ${NC}"
-                ;;
+            echo -e "${YELLOW} Do not install. ${NC}"
+            ;;
 esac
 
 #-------------------
 # install crontab
 #-------------------
-
 echo
 echo -e "${BG_GREEN} Installing crontab... ${NC}"
 case $cron in
         y)
-                sudo apt install cron -y
-                ;;
+            sudo apt install cron -y
+            ;;
         n)
-                echo -e "${YELLOW} Do not install. ${NC}"
-                ;;
+            echo -e "${YELLOW} Do not install. ${NC}"
+            ;;
 esac
 
 #-------------------
 # password reset
 #-------------------
-
 passwd -d "$USER"
 
 echo
