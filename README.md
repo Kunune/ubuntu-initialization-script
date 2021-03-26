@@ -10,9 +10,9 @@
 
 # Functions
 
-- `text editor` : vim / nano
-- `firewall` : firewalld / ufw / iptables
-- `reverse proxy` : nginx / apache2 / caddy
+- `text editor` : nano
+- `firewall` : iptables
+- `reverse proxy` : nginx
 - `crontab`
 
 # Usage
