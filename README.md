@@ -4,7 +4,7 @@
 
 # Usage
 
-    curl -O https://raw.githubusercontent.com/Kunune/ubuntu-initialization-script/main/init.sh
+    curl -O https://raw.githubusercontent.com/zagabond/ubuntu-initialization-script/main/init.sh
     chmod +x init.sh
     ./init.sh
 
