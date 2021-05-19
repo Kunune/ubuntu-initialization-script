@@ -28,73 +28,6 @@ BG_MAGENTA="\e[1;45m"
 BG_CYAN="\e[1;46m"
 NC="\e[0m"
 
-#----------------------
-# clear screen
-#----------------------
-clear
-
-#----------------------
-# text editor
-#----------------------
-echo
-echo -e "${BG_CYAN} Text editor ${NC}"
-echo "1) nano"
-echo "2) Do not install"
-
-read -p "Text editor [1] : " editor
-
-until [[ -z "$editor" || "$editor" =~ ^[12] ]]; do
-        echo -e "${BG_RED} $editor : invalid value ${NC}"
-        read -p "Text editor [1] : " editor
-done
-[ -z "$editor" ] && editor="1"
-
-#---------------------
-# firewall
-#---------------------
-echo
-echo -e "${BG_CYAN} Firewall ${NC}"
-echo "1) iptables"
-echo "2) Do not install"
-
-read -p "Firewall [1] : " firewall
-
-until [[ -z "$firewall" || "$firewall" =~ ^[12] ]]; do
-        echo -e "${BG_RED} $firewall : invaild value ${NC}"
-        read -p "Firewall [1] : " firewall
-done
-[ -z "$firewall" ] && firewall="1"
-
-#--------------------
-# reverse proxy
-#--------------------
-echo
-echo -e "${BG_CYAN} Reverse proxy ${NC}"
-echo "1) Nginx"
-echo "2) Do not install"
-
-read -p "Reverse proxy [2] : " reverseProxy
-
-until [[ -z "$reverseProxy" || "$reverseProxy" =~ ^[12] ]]; do
-        echo -e "${BG_RED} $reverseProxy : invalid value ${NC}"
-        read -p "Reverse proxy [2] : " reverseProxy
-done
-[ -z "$reverseProxy" ] && reverseProxy="2"
-
-#--------------------
-# crontab
-#--------------------
-echo
-echo -e "${BG_CYAN} Crontab ${NC}"
-
-read -p "install (y/n) [y] : " cron
-
-until [[ -z "$cron" || "$cron" =~ ^[yn] ]]; do
-        echo -e "${BG_RED} $cron : invaild value ${NC}"
-        read -p "install (y/n) [y] : " cron
-done
-[ -z "$cron" ] && cron="y"
-
 #-------------------
 # before start
 #-------------------
@@ -115,71 +48,72 @@ echo -e "${BG_GREEN} Upgrading... ${NC}"
 
 sudo apt upgrade -y
 
+# ---------------------
+# swap memory
+# ---------------------
+echo
+echo -e "${BG_GREEN} Setting swap memory... ${NC}"
+sudo fallocate -l 1GB /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+
 #----------------------
 # install text editor
 #----------------------
 echo
 echo -e "${BG_GREEN} Installing text editor... ${NC}"
-case $editor in
-        1)
-                sudo apt install nano -y
-                ;;
-        2)
-                echo -e "${YELLOW} Do not install. ${NC}"
-                ;;
-esac
+sudo apt install vim -y
+
+cat << EOF > /home/ubuntu/.vimrc
+syntax on
+set paste
+set number
+set autoindent
+set smartindent
+set cindent
+set ruler
+set softtabstop=4
+set shiftwidth=4
+set tabstop=4
+set hlsearch
+set showmatch
+set wmnu
+set cursorline
+EOF
+
+sudo cp .vimrc /root
 
 #-----------------------
 # install firewall
 #-----------------------
 echo
 echo -e "${BG_GREEN} Installing firewall... ${NC}"
-case $firewall in
-        1)
-            sudo apt install iptables -y
-            ;;
-        2)
-            echo -e "${YELLOW} Do not install. ${NC}"
-            ;;
-esac
+sudo apt install iptables -y
 
-#-----------------------
-# install reverse proxy
-#-----------------------
-echo
-echo -e "${BG_GREEN} Installing reverse proxy... ${NC}"
-case $reverseProxy in
-        1)
-            sudo apt install nginx -y
-            ;;
-        2)
-            echo -e "${YELLOW} Do not install. ${NC}"
-            ;;
-esac
+mkdir config
+sudo iptables-save > config/iptables.dump
 
 #-------------------
 # install crontab
 #-------------------
 echo
 echo -e "${BG_GREEN} Installing crontab... ${NC}"
-case $cron in
-        y)
-            sudo apt install cron -y
-            ;;
-        n)
-            echo -e "${YELLOW} Do not install. ${NC}"
-            ;;
-esac
+sudo apt install cron -y
+
+echo -e "# m h dom mon dow command\n@reboot sudo iptables-restore < config/iptables.dump\n\n# 50 19 * * 7 sudo truncate -s 0 /var/log/nginx/access.log\n# 50 19 * * 7 sudo truncate -s 0 /var/log/nginx/error.log\n# 50 19 * * 7 sudo truncate -s 0 /var/log/fail2ban.log" | crontab
+
+echo -e "# m h dom mon dow command\n@reboot sudo swapon /swapfile\n0 20 * * * sudo reboot\n0 19 * * * sudo apt update -y && sudo apt upgrade -y" | sudo crontab
 
 #-------------------
 # password reset
 #-------------------
-passwd -d "$USER"
 
 echo
 echo -e "${BG_GREEN} Password reseted ${NC}"
+sudo passwd -d "$USER"
 echo -e "${RED}Password must be set after reboot.${NC}"
-echo -e "> passwd"
+echo -e "$ passwd"
 
 #-------------------
 # reboot
@@ -189,6 +123,7 @@ echo -e "${BG_YELLOW} Restart automatically... ${NC}"
 
 echo "It will restart in 5 seconds."
 echo
+
 sleep 5
 
 sudo reboot
