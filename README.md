@@ -44,3 +44,14 @@
     # 50 19 * * 7 sudo truncate -s 0 /var/log/nginx/access.log
     # 50 19 * * 7 sudo truncate -s 0 /var/log/nginx/error.log
     # 50 19 * * 7 sudo truncate -s 0 /var/log/fail2ban.log
+
+**swap**
+
+    sudo fallocate -l 1GB /swapfile
+    sudo chmod 600 /swapfile
+    sudo mkswap /swapfile
+    sudo swapon /swapfile
+    
+**password reset**
+
+    sudo passwd -d "$USER"
