@@ -4,17 +4,43 @@
 
 # Usage
 
-    curl -O https://raw.githubusercontent.com/zagabond/ubuntu-initialization-script/main/init.sh
-    chmod +x init.sh
-    ./init.sh
+    curl https://raw.githubusercontent.com/zagabond/ubuntu-initialization-script/main/init.sh | bash
 
 # Functions
 
-- `text editor` : nano
-- `firewall` : iptables
-- `reverse proxy` : nginx
-- `crontab`
+**Text editor** : vim
 
-# Get in touch
+    syntax on
+    set paste
+    set number
+    set autoindent
+    set smartindent
+    set cindent
+    set ruler
+    set softtabstop=4
+    set shiftwidth=4
+    set tabstop=4
+    set hlsearch
+    set showmatch
+    set wmnu
+    set cursorline
 
-issue me
+**Firewall** : iptables
+
+    @reboot sudo iptables-restore < config/iptables.dump
+
+**crontab**
+
+`user crontab`
+
+    # m h  dom mon dow   command
+    @reboot sudo iptables-restore < config/iptables.dump
+    
+`root crontab`
+
+    # m h dom mon dow command
+    @reboot sudo iptables-restore < config/iptables.dump
+
+    # 50 19 * * 7 sudo truncate -s 0 /var/log/nginx/access.log
+    # 50 19 * * 7 sudo truncate -s 0 /var/log/nginx/error.log
+    # 50 19 * * 7 sudo truncate -s 0 /var/log/fail2ban.log
