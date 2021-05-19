@@ -33,17 +33,19 @@
 
 `user crontab`
 
-    # m h  dom mon dow   command
-    @reboot sudo iptables-restore < config/iptables.dump
-    
-`root crontab`
-
     # m h dom mon dow command
     @reboot sudo iptables-restore < config/iptables.dump
 
     # 50 19 * * 7 sudo truncate -s 0 /var/log/nginx/access.log
     # 50 19 * * 7 sudo truncate -s 0 /var/log/nginx/error.log
     # 50 19 * * 7 sudo truncate -s 0 /var/log/fail2ban.log
+    
+`root crontab`
+
+    # m h dom mon dow command
+    @reboot sudo swapon /swapfile
+    0 20 * * * sudo reboot
+    0 19 * * * sudo apt update -y && sudo apt upgrade -y
 
 **swap**
 
