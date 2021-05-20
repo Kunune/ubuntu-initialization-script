@@ -28,13 +28,6 @@ BG_MAGENTA="\e[1;45m"
 BG_CYAN="\e[1;46m"
 NC="\e[0m"
 
-#-------------------
-# before start
-#-------------------
-echo
-echo -e "${BG_GREEN} Setup is ready to install. ${NC}"
-read -n1 -r -p "Press any key to continue..."
-
 #--------------------
 # start
 #--------------------
