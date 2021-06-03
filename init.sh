@@ -104,7 +104,7 @@ echo
 echo -e "${BG_GREEN} Installing crontab... ${NC}"
 sudo apt install cron -y
 
-echo -e "# m h dom mon dow command\n@reboot sudo iptables-restore < config/iptables.dump\n\n# 50 19 * * 7 sudo truncate -s 0 /var/log/nginx/access.log\n# 50 19 * * 7 sudo truncate -s 0 /var/log/nginx/error.log\n# 50 19 * * 7 sudo truncate -s 0 /var/log/fail2ban.log" | crontab
+echo -e "# m h dom mon dow command\n@reboot sudo iptables-restore < config/iptables.dump\n\n# 50 19 * * 7 sudo truncate -s 0 /var/log/nginx/access.log && sudo truncate -s 0 /var/log/nginx/error.log\n# 50 19 * * 7 sudo truncate -s 0 /var/log/fail2ban.log" | crontab
 
 echo -e "# m h dom mon dow command\n@reboot sudo swapon /swapfile\n0 20 * * * sudo reboot\n0 19 * * * sudo apt update -y && sudo apt upgrade -y" | sudo crontab
 
@@ -115,7 +115,6 @@ echo -e "# m h dom mon dow command\n@reboot sudo swapon /swapfile\n0 20 * * * su
 echo
 echo -e "${BG_GREEN} Password reseted ${NC}"
 sudo passwd -d "$USER"
-echo -e "${RED}Password must be set after reboot.${NC}"
 echo -e "$ passwd"
 
 #-------------------
@@ -125,6 +124,8 @@ echo
 echo -e "${BG_YELLOW} Restart automatically... ${NC}"
 
 echo "It will restart in 5 seconds."
+echo
+echo -e "${RED}Password must be set after reboot.${NC}"
 echo
 
 sleep 5
