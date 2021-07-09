@@ -1,21 +1,6 @@
 #!/bin/bash
 
 #----------------------
-# check os
-#----------------------
-if [ -f /etc/os-release ]; then
-        . /etc/os-release
-        OS=$NAME
-        VER=$VERSION_ID
-fi
-
-if [ "$OS" != "Ubuntu" ]; then
-        echo "This script seems to be running on an unsupported distribution."
-        echo "Supported distribution is Ubuntu."
-        exit
-fi
-
-#----------------------
 # text color
 #----------------------
 RED="\e[1;31m"
@@ -27,6 +12,11 @@ BG_YELLOW="\e[1;43m"
 BG_MAGENTA="\e[1;45m"
 BG_CYAN="\e[1;46m"
 NC="\e[0m"
+
+#----------------------
+# check os
+#----------------------
+curl -s https://raw.githubusercontent.com/zagabond/server-scripts/main/check-os.sh | bash
 
 #--------------------
 # update & upgrade
