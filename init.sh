@@ -49,26 +49,8 @@ echo -e "# m h dom mon dow command\n@reboot sudo iptables-restore < config/iptab
 
 echo -e "# m h dom mon dow command\n@reboot sudo swapon /swapfile\n0 20 * * * sudo reboot\n0 19 * * * sudo apt update -y && sudo apt upgrade -y" | sudo crontab
 
-#-------------------
-# password reset
-#-------------------
-
-echo
-echo -e "${BG_GREEN} Password reseted ${NC}"
-sudo passwd -d "$USER"
-echo -e "$ passwd"
-
-#-------------------
-# reboot
-#-------------------
-echo
-echo -e "${BG_YELLOW} Restart automatically... ${NC}"
-
-echo "It will restart in 5 seconds."
-echo
-echo -e "${RED}Password must be set after reboot.${NC}"
-echo
-
-sleep 5
-
-sudo reboot
+#-------------------------
+# reset password & reboot
+#-------------------------
+https://github.com/zagabond/server-scripts/blob/main/reset-password.sh
+https://github.com/zagabond/server-scripts/blob/main/reboot-after-setup.sh
