@@ -29,63 +29,19 @@ BG_CYAN="\e[1;46m"
 NC="\e[0m"
 
 #--------------------
-# start
+# update & upgrade
 #--------------------
-echo
-echo -e "${BG_GREEN} Updating... ${NC}"
-
-sudo apt update -y
-
-echo
-echo -e "${BG_GREEN} Upgrading... ${NC}"
-
-sudo apt upgrade -y
-
-echo
-echo -e "${BG_GREEN} Updating... ${NC}"
-
-sudo apt update -y
-
-echo
-echo -e "${BG_GREEN} Upgrading... ${NC}"
-
-sudo apt upgrade -y
+curl -s https://raw.githubusercontent.com/zagabond/server-scripts/main/update-upgrade.sh | bash
 
 # ---------------------
 # swap memory
 # ---------------------
-echo
-echo -e "${BG_GREEN} Setting swap memory... ${NC}"
-sudo fallocate -l 1GB /swapfile
-sudo chmod 600 /swapfile
-sudo mkswap /swapfile
-sudo swapon /swapfile
+curl -s https://raw.githubusercontent.com/zagabond/server-scripts/main/swap-memory.sh | bash
 
 #----------------------
 # install text editor
 #----------------------
-echo
-echo -e "${BG_GREEN} Installing text editor... ${NC}"
-sudo apt install vim -y
-
-cat << EOF > /home/ubuntu/.vimrc
-syntax on
-set paste
-set number
-set autoindent
-set smartindent
-set cindent
-set ruler
-set softtabstop=4
-set shiftwidth=4
-set tabstop=4
-set hlsearch
-set showmatch
-set wmnu
-set cursorline
-EOF
-
-sudo cp .vimrc /root
+curl -s https://raw.githubusercontent.com/zagabond/server-scripts/main/install-vim.sh | bash
 
 #-----------------------
 # install firewall
