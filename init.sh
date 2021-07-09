@@ -33,15 +33,10 @@ curl -s https://raw.githubusercontent.com/zagabond/server-scripts/main/swap-memo
 #----------------------
 curl -s https://raw.githubusercontent.com/zagabond/server-scripts/main/install-vim.sh | bash
 
-#-----------------------
-# install firewall
-#-----------------------
-echo
-echo -e "${BG_GREEN} Installing firewall... ${NC}"
-sudo apt install iptables -y
-
-mkdir config
-sudo iptables-save > config/iptables.dump
+#----------------------
+# initialize firewall
+#----------------------
+curl -s https://github.com/zagabond/server-scripts/blob/main/init-ipconfig.sh | bash
 
 #-------------------
 # install crontab
