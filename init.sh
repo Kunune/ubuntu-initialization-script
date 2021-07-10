@@ -36,7 +36,7 @@ curl -s https://raw.githubusercontent.com/zagabond/server-scripts/main/install-v
 #----------------------
 # initialize firewall
 #----------------------
-curl -s https://github.com/zagabond/server-scripts/blob/main/init-ipconfig.sh | bash
+curl -s https://raw.githubusercontent.com/zagabond/server-scripts/main/init-ipconfig.sh | bash
 
 #-------------------
 # install crontab
